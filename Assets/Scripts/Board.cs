@@ -16,6 +16,17 @@ public class Board : MonoBehaviour
     private Piece activePiece { get; set; }
     private int _tetrominoTypeFlags = 127;
 
+    private Vector2Int _boardSize = new Vector2Int(10, 20);
+
+    private RectInt _bounds
+    {
+        get
+        {
+            Vector2Int pos = new Vector2Int(-_boardSize.x / 2, -_boardSize.y / 2);
+            return new RectInt(pos, _boardSize);
+        }
+    }
+
     private void Awake()
     {
         tilemap = GetComponentInChildren<Tilemap>();
@@ -64,12 +75,41 @@ public class Board : MonoBehaviour
         SetPiece(activePiece);
     }
 
-    private void SetPiece(Piece piece)
+    public void SetPiece(Piece piece)
     {
         foreach (var cell in piece.cellStates)
         {
             Vector3Int tilePos = cell + piece.position;
             tilemap.SetTile(tilePos, piece.data.tile);
         }
+    }
+
+    public void ClearPiece(Piece piece)
+    {
+        foreach (var cell in piece.cellStates)
+        {
+            Vector3Int tilePos = cell + piece.position;
+            tilemap.SetTile(tilePos, null);
+        }
+    }
+
+    public bool IsValidPosition(Piece piece, Vector3Int position)
+    {
+        foreach (var cell in piece.cellStates)
+        {
+            Vector3Int testPos = cell + position;
+
+            if (!_bounds.Contains((Vector2Int)testPos))
+            {
+                return false;
+            }
+
+            if (tilemap.HasTile(testPos))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

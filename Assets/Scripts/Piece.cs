@@ -8,7 +8,7 @@ public class Piece : MonoBehaviour
     public TetrominoData data { get; private set; }
     public Vector3Int position { get; private set; }
     public Vector3Int[] cellStates { get; private set; }
-    
+
     public void Init(Board board, Vector3Int position, TetrominoData data)
     {
         this.board = board;
@@ -23,16 +23,40 @@ public class Piece : MonoBehaviour
             cellStates[i] = (Vector3Int)data.cells[i];
         }
     }
-    
+
     // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    // void Start()
+    // {
+    //     
+    // }
 
     // Update is called once per frame
     void Update()
     {
-        
+        board.ClearPiece(this);
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            Move(Vector2Int.left);
+        }
+        else if (Input.GetKeyDown(KeyCode.D))
+        {
+            Move(Vector2Int.right);
+        }
+
+        board.SetPiece(this);
+    }
+
+    private bool Move(Vector2Int direction)
+    {
+        Vector3Int newPos = this.position;
+        newPos.x += direction.x;
+        newPos.y += direction.y;
+
+        if (board.IsValidPosition(this, newPos))
+        {
+            this.position = newPos;
+            return true;
+        }
+        else return false;
     }
 }

@@ -201,7 +201,7 @@ Transform:
   m_GameObject: {fileID: 110100850}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.79821867, y: 0.8925, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -260,7 +260,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 12
+  orthographic size: 14.5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -284,7 +284,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 2.3, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -474,7 +474,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 10, y: 20}
+  m_Size: {x: 8, y: 18}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -569,7 +569,12 @@ MonoBehaviour:
     tile: {fileID: 11400000, guid: 82166afce88bdd45ba4004ad7b6d2224, type: 2}
   - tetromino: 6
     tile: {fileID: 11400000, guid: f3a3f73801f842c29bfd4a41f3ac0bd7, type: 2}
-  spawnPosition: {x: -1, y: 8, z: 0}
+  boardSize: {x: 8, y: 18}
+  previewCount: 3
+  spawnPosition: {x: -1, y: 7, z: 0}
+  swapPosition: {x: 6, y: 6, z: 0}
+  previewPosition: {x: 6, y: 3, z: 0}
+  gameState: 0
 --- !u!114 &1490926045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -582,6 +587,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e48ef823090f34d3ab9e749506d6729, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _stepTimeout: 1
+  _lockTimeout: 0.5
+  _tapTimeout: 0.1
+  pieceState: 0
 --- !u!1 &1608127129
 GameObject:
   m_ObjectHideFlags: 0
@@ -592,6 +601,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1608127131}
   - component: {fileID: 1608127130}
+  - component: {fileID: 1608127132}
   m_Layer: 0
   m_Name: Ghost
   m_TagString: Untagged
@@ -627,6 +637,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1608127132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1608127129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47cf10c9f481b3b20855ecadb89438fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tile: {fileID: 11400000, guid: 377ac1277a4eddcc5b41d3d9430718ca, type: 2}
+  board: {fileID: 1490926044}
+  ghostingPiece: {fileID: 1490926045}
 --- !u!1 &1659826312
 GameObject:
   m_ObjectHideFlags: 0

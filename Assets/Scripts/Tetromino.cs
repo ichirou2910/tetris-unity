@@ -19,9 +19,11 @@ public class TetrominoData
     public Tetromino tetromino;
     public Tile tile;
     public Vector2Int[] cells { get; private set; }
+    public Vector2Int[,] wallKicks { get; private set; }
 
     public void Init()
     {
-        cells = StaticParams.Cells[tetromino];
+        cells = TetrominoSRSData.Cells[tetromino];
+        wallKicks = TetrominoSRSData.WallKicks[tetromino];
     }
 }

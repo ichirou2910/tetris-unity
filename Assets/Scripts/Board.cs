@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Enums;
 using Events;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 using Random = UnityEngine.Random;
 
@@ -12,6 +14,7 @@ public class Board : MonoBehaviour
     public Tilemap tilemap { get; private set; }
     public TetrominoData[] tetrominoes;
     public Vector2Int boardSize = new(10, 20);
+    public TMP_Text highScoreText;
 
     [SerializeField] private int previewCount;
     [SerializeField] private Vector3Int spawnPosition;
@@ -23,6 +26,8 @@ public class Board : MonoBehaviour
     private Piece swapPiece { get; set; }
     private Piece[] previewPieces { get; set; }
     private int _tetrominoTypeFlags = 127;
+    private int _score = 0;
+    private int _highscore = 0;
 
     public GameStateEnum gameState;
 
@@ -62,7 +67,12 @@ public class Board : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // load highscore
+        _highscore = PlayerPrefs.GetInt("highscore");
+        highScoreText.SetText("Best: " + _highscore);
+        
         ChangeState(GameStateEnum.SpawningPiece);
+        this.SuscribeEvent(EventID.OnReplay, (param) => ResetGame());
     }
 
     public void ChangeState(GameStateEnum newState)
@@ -79,6 +89,11 @@ public class Board : MonoBehaviour
             case GameStateEnum.ClearLine:
                 StartCoroutine(ClearLines());
                 break;
+            case GameStateEnum.Lose:
+                if (_score > _highscore)
+                    PlayerPrefs.SetInt("highscore", _score);
+                this.PublishEvent(EventID.OnGameOver);
+                break;
         }
     }
 
@@ -90,10 +105,15 @@ public class Board : MonoBehaviour
         
         UpdatePreview();
 
-        if (IsValidPosition(activePiece, spawnPosition))
+        if (!IsValidPosition(activePiece, spawnPosition))
+        {
+            ChangeState(GameStateEnum.Lose);
+        }
+        else
+        {
             SetPiece(activePiece);
-
-        ChangeState(GameStateEnum.PlayerInput);
+            ChangeState(GameStateEnum.PlayerInput);
+        }
     }
 
     public void SetPiece(Piece piece)
@@ -217,6 +237,7 @@ public class Board : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
 
             // Push down above rows
+            clearedRows.Reverse();
             foreach (int row in clearedRows)
             {
                 int curRow = row;
@@ -232,7 +253,16 @@ public class Board : MonoBehaviour
                 }
             }
 
-            int score = 1000 * clearedRows.Count;
+            int score = clearedRows.Count;
+            if (score == 1)
+                score = 100;
+            else if (score == 2)
+                score = 300;
+            else if (score == 3)
+                score = 500;
+            else if (score == 4)
+                score = 800;
+            _score += score;
             this.PublishEvent(EventID.OnPlayerScore, score);
         }
 
@@ -273,5 +303,11 @@ public class Board : MonoBehaviour
         }
 
         return true;
+    }
+
+    private void ResetGame()
+    {
+        this.UnsubscribeEvent(EventID.OnReplay, (param) => ResetGame());
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

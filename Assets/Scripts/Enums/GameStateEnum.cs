@@ -6,7 +6,6 @@ namespace Enums
         SpawningPiece,
         PlayerInput,
         ClearLine,
-        Win,
         Lose
     }
 }

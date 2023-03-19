@@ -4,5 +4,7 @@ namespace Events
     {
         None = 0,
         OnPlayerScore,
+        OnReplay,
+        OnGameOver,
     }
 }

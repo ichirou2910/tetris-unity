@@ -47,7 +47,7 @@ public class Ghost : MonoBehaviour
         Vector3Int pos = ghostingPiece.position;
 
         int currentRow = pos.y;
-        int bottomRow = -9;
+        int bottomRow = -10;
         
         board.ClearPiece(ghostingPiece);
 

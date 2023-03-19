@@ -6,9 +6,14 @@ namespace Events
 	public static class EventDispatcherExtension
 	{
 		/// Use for registering with EventsManager
-		public static void RegisterListener (this MonoBehaviour listener, EventID eventID, Action<object> callback)
+		public static void SuscribeEvent (this MonoBehaviour listener, EventID eventID, Action<object> callback)
 		{
-			EventDispatcher.Instance.RegisterListener(eventID, callback);
+			EventDispatcher.Instance.AddListener(eventID, callback);
+		}
+		
+		public static void UnsubscribeEvent (this MonoBehaviour listener, EventID eventID, Action<object> callback)
+		{
+			EventDispatcher.Instance.RemoveListener(eventID, callback);
 		}
 
 		/// Post event with param

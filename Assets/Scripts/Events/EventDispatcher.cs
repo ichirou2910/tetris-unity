@@ -48,7 +48,7 @@ namespace Events
 			}
 		}
 
-		public void RegisterListener (EventID eventID, Action<object> callback)
+		public void AddListener (EventID eventID, Action<object> callback)
 		{
 			if (_listeners.ContainsKey(eventID))
 			{
@@ -58,6 +58,14 @@ namespace Events
 			{
 				_listeners.Add(eventID, null);
 				_listeners[eventID] += callback;
+			}
+		}
+		
+		public void RemoveListener (EventID eventID, Action<object> callback)
+		{
+			if (_listeners.ContainsKey(eventID))
+			{
+				_listeners[eventID] -= callback;
 			}
 		}
 

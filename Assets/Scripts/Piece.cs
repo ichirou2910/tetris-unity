@@ -96,7 +96,10 @@ public class Piece : MonoBehaviour
             else
             {
                 if (currentMousePos.y <= Screen.height / 2)
-                    Move(Vector2Int.down);
+                {
+                    if (currentMousePos.x <= Screen.width * 2 / 3)
+                        Move(Vector2Int.down);
+                }
                 else
                 {
                     if (currentMousePos.x <= Screen.width / 2)
@@ -113,30 +116,32 @@ public class Piece : MonoBehaviour
             mousePos = currentMousePos;
         }
 
-        // if (Input.GetKeyDown(KeyCode.A))
-        // {
-        //     Move(Vector2Int.left);
-        // }
-        // else if (Input.GetKeyDown(KeyCode.D))
-        // {
-        //     Move(Vector2Int.right);
-        // }
-        // else if (Input.GetKeyDown(KeyCode.S))
-        // {
-        //     Move(Vector2Int.down);
-        // }
-        // else if (Input.GetKeyDown(KeyCode.Space))
-        // {
-        //     HardDrop();
-        // }
-        // else if (Input.GetKeyDown(KeyCode.Q))
-        // {
-        //     Rotate(-1);
-        // }
-        // else if (Input.GetKeyDown(KeyCode.E))
-        // {
-        //     Rotate(1);
-        // }
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            Move(Vector2Int.left);
+        }
+        else if (Input.GetKeyDown(KeyCode.D))
+        {
+            Move(Vector2Int.right);
+        }
+        else if (Input.GetKeyDown(KeyCode.S))
+        {
+            Move(Vector2Int.down);
+        }
+        else if (Input.GetKeyDown(KeyCode.Space))
+        {
+            HardDrop();
+        }
+        else if (Input.GetKeyDown(KeyCode.Q))
+        {
+            Rotate(-1);
+        }
+        else if (Input.GetKeyDown(KeyCode.E))
+        {
+            Rotate(1);
+        }
+#endif
 
         // Automatically fall 1 step when not doing anything
         if (Time.time > _stepTime)
